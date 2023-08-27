@@ -1,0 +1,130 @@
+/* Source:
+https://www.kaggle.com/nasa/astronaut-yearbook
+*/
+
+/*This shows the columns of the table that will be used for data analysis */
+SELECT Name, Year, Gender, "Undergraduate Major", "Graduate Major", "Space Flight (hr)", "Space Walks (hr)" 
+FROM Astronauts;
+
+/*This shows the total number of astronauts that began each year at NASA*/
+SELECT COUNT(Name) AS "Number of Astronauts", Year 
+FROM Astronauts
+GROUP BY Year;
+
+/*This query expands upon the previous one, considering how many of astronauts of each gender
+began each year at NASA*/
+SELECT COUNT(Name) AS "Number of Astronauts", Gender, Year 
+FROM Astronauts
+GROUP BY Year, Gender;
+
+/*This shows where each astronaut was born*/
+SELECT Name, "Birth Place" 
+FROM Astronauts;
+
+/*This groups birthplaces and shows how many astronauts were born in each place*/
+SELECT COUNT(Name), "Birth Place" 
+FROM Astronauts
+GROUP BY "Birth Place";
+
+/*This shows the various undergraduate majors studied by astronauts and how many astronauts
+studied each major*/
+SELECT "Undergraduate Major", COUNT("Undergraduate Major") AS "Number of Astronauts"
+FROM Astronauts
+GROUP BY "Undergraduate Major"
+ORDER BY "Number of Astronauts";
+
+/*Similarly to the previous query, this shows the various graduate majors studied by astronauts
+and how many astronauts studied each major*/
+SELECT "Graduate Major", COUNT("Graduate Major") AS "Number of Astronauts"
+FROM Astronauts
+GROUP BY "Graduate Major"
+ORDER BY "Number of Astronauts";
+
+/*The results of the previous queries showed that many astronauts studied engineering, so this
+shows the number of astronauts who studied some type of engineering for either their
+undergraduate or graduate major*/
+SELECT COUNT(name) AS "Number of Astronauts who Studied Engineering for either Undergraduate or Graduate Majors" 
+FROM Astronauts 
+WHERE "Undergraduate Major" LIKE "%Engineering%" OR "Graduate Major" LIKE "%Engineering%";
+
+/*Similarly to the previous query, this shows the number of astronauts who studied some type of
+engineering for both their undergraduate and graduate major*/
+SELECT COUNT(name) AS "Number of Astronauts who Studied Engineering for both Undergraduate and Graduate Majors" 
+FROM Astronauts 
+WHERE "Undergraduate Major" LIKE "%Engineering%" AND "Graduate Major" LIKE "%Engineering%";
+
+/*This considers the astronauts who have had at least one space flight and lists their name, how
+many hours they have flown in space, and adds a comment based on the number of hours*/
+SELECT Name, "Space Flight (hr)",
+CASE
+  WHEN "Space Flight (hr)" > 10000 THEN "Over 10,000 Hours Flying in Space!"
+  WHEN "Space Flight (hr)" > 5000 THEN "Over 5,000 Hours Flying in Space!"
+  WHEN "Space Flight (hr)" > 1000 THEN "Over 1,000 Hours Flying in Space!"
+  WHEN "Space Flight (hr)" > 500 THEN "Over 500 Hours Flying in Space!"
+  WHEN "Space Flight (hr)" > 100 THEN "Over 100 Hours Flying in Space!"
+ELSE "Up to 100 Hours Flying in Space!"
+END AS "Hours Flying in Space"
+FROM Astronauts WHERE "Space Flights" > 0
+ORDER BY "Space Flight (hr)";
+
+/*This counts how many astronauts fell into each range of hours flown in space*/
+SELECT COUNT(Name) AS "Number of Astronauts",
+CASE
+WHEN "Space Flight (hr)" > 10000 THEN "Over 10,000 Hours Flying in Space!"
+WHEN "Space Flight (hr)" > 5000 THEN "Over 5,000 Hours Flying in Space!"
+WHEN "Space Flight (hr)" > 1000 THEN "Over 1,000 Hours Flying in Space!"
+WHEN "Space Flight (hr)" > 500 THEN "Over 500 Hours Flying in Space!"
+WHEN "Space Flight (hr)" > 100 THEN "Over 100 Hours Flying in Space!"
+ELSE "Up to 100 Hours Flying in Space!"
+END AS "Hours Flying in Space"
+FROM Astronauts WHERE "Space Flights" > 0
+GROUP BY "Hours Flying in Space"
+ORDER BY "Number of Astronauts";
+
+/*This shows how many total hours astronauts have spent flying in space*/
+SELECT SUM("Space Flight (hr)") AS "Total Hours Astronauts Spent Flying in Space" FROM
+Astronauts;
+
+/*This shows the average number of hours astronauts have spent flying in space*/
+SELECT AVG("Space Flight (hr)") AS "Average Hours Flying in Space" FROM Astronauts;
+
+/*This names the astronaut who has flown the most hours in space and how many hours they
+have flown*/
+SELECT name, MAX("Space Flight (hr)") AS "Maximum Hours Flying in Space" FROM
+Astronauts;
+
+/*This considers the astronauts who have had at least one space walk and lists their name, how
+many hours they have walked in space, and adds a comment based on the number of hours*/
+SELECT Name, "Space Walks (hr)",
+CASE
+WHEN "Space Walks (hr)" > 50 THEN "Over 50 Hours Walking in Space!"
+WHEN "Space Walks (hr)" > 25 THEN "Over 25 Hours Walking in Space!"
+WHEN "Space Walks (hr)" > 10 THEN "Over 10 Hours Walking in Space!"
+ELSE "Up to 10 Hours Walking in Space!"
+END AS "Hours Walking in Space"
+FROM Astronauts WHERE "Space Walks" > 0
+ORDER BY "Space Walks (hr)";
+
+/*This counts how many astronauts fell into each range of hours walked in space*/
+SELECT COUNT(Name) AS "Number of Astronauts",
+CASE
+WHEN "Space Walks (hr)" > 50 THEN "Over 50 Hours Walking in Space!"
+WHEN "Space Walks (hr)" > 25 THEN "Over 25 Hours Walking in Space!"
+WHEN "Space Walks (hr)" > 10 THEN "Over 10 Hours Walking in Space!"
+ELSE "Up to 10 Hours Walking in Space!"
+END AS "Hours Walking in Space"
+FROM Astronauts WHERE "Space Walks" > 0
+GROUP BY "Hours Walking in Space"
+ORDER BY "Number of Astronauts";
+
+/*This shows how many total hours astronauts have spent walking in space*/
+SELECT SUM("Space Walks (hr)") AS "Total Hours Astronauts Spent Walking in Space" FROM
+Astronauts;
+
+/*This shows the average number of hours astronauts have spent walking in space*/
+SELECT AVG("Space Walks (hr)") AS "Average Hours Walking in Space" FROM Astronauts;
+
+/*This names the astronaut who has walked the most hours in space and how many hours they
+have walked*/
+SELECT name, MAX("Space Walks (hr)") AS "Maximum Hours Walking in Space" FROM
+Astronauts;
