@@ -1,6 +1,4 @@
-/* Source:
-https://www.kaggle.com/nasa/astronaut-yearbook
-*/
+/* Source: https://www.kaggle.com/nasa/astronaut-yearbook*/
 
 /*This shows the columns of the table that will be used for data analysis */
 SELECT Name, Year, Gender, "Undergraduate Major", "Graduate Major", "Space Flight (hr)", "Space Walks (hr)" 
